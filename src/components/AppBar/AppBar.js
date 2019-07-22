@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-
 import { makeStyles } from '@material-ui/core/styles';
 import { Toolbar } from '@material-ui/core';
 import GenSelectors from './ChangeGenPage/ChangeGenPage';
@@ -56,11 +55,11 @@ export default ({pokemonTeam, changeGen, removePkmn, changeTeamOrder })=> {
         }else if(direction === "next" && selectedSummary.id < 6){
             setSelectedSummary(pokemonTeam[selectedSummary.id + 1])
         }else if(direction === "set"){
-
             setSelectedSummary(pokemonTeam[id])
         }
     }
-    const pokeballs = Array.from(Array(6), (pokeball, id) => <Pokeball 
+    const pokeballs = Array.from(Array(6), (pokeball, id) => <Pokeball
+        key={"pokeball"+id} 
         onClick={ (e) => pokeBallClick(e, id)}
         movePokemon={movePokemon}
         pokemonInformation={pokemonTeam[id] ? pokemonTeam[id] : null}    
@@ -79,14 +78,12 @@ export default ({pokemonTeam, changeGen, removePkmn, changeTeamOrder })=> {
     return (
         <AppBar className={classes.root}>
             {pkmnSummary}
-            
                 <Toolbar>
                     <GenSelectors genClick={changeGen}  />
                     <DndProvider backend={HTML5Backend}>
                         <div style={{flex: 1, padding: "8px"}}> <p>Team:</p> {pokeballs}</div>
                     </DndProvider>
                 </Toolbar>
-            
         </AppBar>
     )
 }

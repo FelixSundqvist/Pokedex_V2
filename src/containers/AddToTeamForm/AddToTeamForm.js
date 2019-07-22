@@ -196,7 +196,6 @@ const AddToTeamForm = ({ pokemon, addPokemonToTeam, open, onClose, setOpen }) =>
 
 return (
     <>
-    
     <Modal
         open={open}
         onClose={onClose}>

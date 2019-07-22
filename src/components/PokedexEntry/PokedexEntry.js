@@ -87,7 +87,6 @@ const PokedexInfo = React.memo(props => {
             </React.Fragment>    
         :   <div key="loading">LOADING</div>;
     
-
         //Map through all pkmnProperties and render
         const allPkmnProperties = Object.keys(pokemonProperties).map(cur => pokemonProperties[cur]);
         
