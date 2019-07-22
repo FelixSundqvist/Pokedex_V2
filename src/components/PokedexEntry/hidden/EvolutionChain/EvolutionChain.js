@@ -1,5 +1,5 @@
 import React from 'react'
-import PkmnIcon from '../../UI/PkmnIcon/PkmnIcon';
+import PkmnIcon from '../../../UI/PkmnIcon/PkmnIcon';
 import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles( theme => ({

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Modal, Button } from '@material-ui/core';
-import Types from '../../components/PokedexInfo/Types/Types';
-
 import { natures } from '../../utility/natures/natures';
 import PkmnIcon from '../../components/UI/PkmnIcon/PkmnIcon';
+import Types from '../../components/PokedexEntry/hidden/Types/Types';
+
 export const useModalStyles = makeStyles(theme => ({
     root: {
         height: "100%",
@@ -96,7 +96,7 @@ const AddToTeamForm = ({ pokemon, addPokemonToTeam, open, onClose, setOpen }) =>
     const [selectedNature, setSelectedNature ] = useState("")
     const [warning, setWarning] = useState(null)
     const [pokemonIV, setPokemonIV] = useState([0, 0, 0, 0, 0, 0])
-    
+
     useEffect(() => {
         setPokemonMoves([
             {move: pokemon.moves[0].move.name},
@@ -181,6 +181,7 @@ const AddToTeamForm = ({ pokemon, addPokemonToTeam, open, onClose, setOpen }) =>
 
     const submit = (pokemonMoves) => {
         setOpen(false)
+
         addPokemonToTeam(
             {
                 name: pokemon.name, 
@@ -194,6 +195,8 @@ const AddToTeamForm = ({ pokemon, addPokemonToTeam, open, onClose, setOpen }) =>
     }
 
 return (
+    <>
+    
     <Modal
         open={open}
         onClose={onClose}>
@@ -220,7 +223,8 @@ return (
                 <Button variant="contained" onClick={() => submit(pokemonMoves)}>Add</Button>
             </div>
         </div>
-    </Modal>)
+    </Modal>
+    </>)
 
 
 }

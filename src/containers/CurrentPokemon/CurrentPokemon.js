@@ -1,11 +1,11 @@
 import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
-import PokedexInfo from '../../components/PokedexInfo/PokedexInfo';
+import PokedexEntry from '../../components/PokedexEntry/PokedexEntry';
 import * as actionTypes from '../../store/actions/actionTypes';
 import { makeStyles } from '@material-ui/styles';
 import Loading from '../../components/UI/Loading/Loading';
 import ErrorHandler from '../../components/UI/ErrorHandler/ErrorHandler';
-import AddToTeamForm from '../../components/AddToTeamForm/AddToTeamForm';
+import AddToTeamForm from '../AddToTeamForm/AddToTeamForm';
 
 const useStyles = makeStyles(theme => ({
      root:{
@@ -35,9 +35,7 @@ const CurrentPokemon = React.memo((
             fetchSelectedPokemon(match.params.id);
         },[match.params.id, fetchSelectedPokemon]
     )
-    
     useEffect(() => { fetch() }, [fetch])
-    
     const classes = useStyles();
  
     const handleClose = () => setOpen(false);
@@ -47,7 +45,7 @@ const CurrentPokemon = React.memo((
     
     if(!isLoadingCurrent && !fetchCurrentPokemonError){
         pokemon = (
-        <PokedexInfo 
+        <PokedexEntry 
             pokedexInfo={pokedexInfo} 
             selectedPokemon={selectedPokemon}
             evoChain={evoChain}
@@ -68,7 +66,8 @@ const CurrentPokemon = React.memo((
     return (
         <>
         {addToTeam}
-        <div className={classes.root}> 
+        <div className={classes.root}>
+
             {pokemon}
         </div>
         </>

@@ -1,18 +1,10 @@
 import React, { Suspense } from 'react';
-import Types from './Types/Types';
-import InfoImage from './InfoImage/InfoImage';
+import Types from './hidden/Types/Types';
+import PokemonImage3D from './PokemonImage3D/PokemonImage3D';
 import { makeStyles, Button } from '@material-ui/core';
-import FormButton from './FormButton/FormButton'
-import Properties from './Properties/Properties';
-import { checkLetter } from '../../utility';
+import { checkLetter, roundNum } from '../../utility';
 import Abilities from './Abilities/Abilities';
-import showOnClick from '../../hoc/showOnClick';
-
-const Stats = React.lazy(() => import('./Stats/Stats')) 
-const EvolutionChain = React.lazy(() =>  import('./EvolutionChain/EvolutionChain'));
-const DexEntry = React.lazy(() => import('./DexEntry/DexEntry'));
-const MoveList = React.lazy(() => import('./Moves/MoveList'));
-const EggGroup = React.lazy(() => import('./EggGroup/EggGroup'));
+import Hidden from './hidden/Hidden';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -22,9 +14,39 @@ const useStyles = makeStyles(theme => ({
         textTransform: "capitalize",
         textAlign: "center",
         padding: theme.spacing() * 2
+    },
+    pokemonInfoText: {
+        border: "2px solid white", 
+        padding: theme.spacing() * 2,
+        margin: theme.spacing(),
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+
     }
 
 }))
+
+const PokemonInfo = ({habitat, base_happiness, capture_rate, height, weight, className }) => {
+    
+    const pokemonDescription = {}
+    pokemonDescription.habitat = habitat ? <p key="habitat"> Habitat: { habitat.name }</p> : null;
+    pokemonDescription.baseHappiness = base_happiness ? <p key="happiness" >Base Happiness : {base_happiness}</p> : null;
+    pokemonDescription.captureRate = capture_rate ? <p key="capture">Capture Rate: {capture_rate} </p> : null;
+    pokemonDescription.size = height && weight
+    ?   
+        <React.Fragment key="size">
+            <p>
+                {`Height: ${roundNum(height, 0.1)} M`} 
+            </p>
+            <p>
+                {`Weight: ${roundNum(weight, 0.1)} KG`}
+            </p>
+        </React.Fragment>
+    : null;
+    return (<div className={className}>{Object.keys(pokemonDescription).map(current => pokemonDescription[current])}</div>)
+} 
 
 const PokedexInfo = React.memo(props => {
     const {selectedPokemon, pokedexInfo, evoChain, evolutionClick } = props;
@@ -51,7 +73,7 @@ const PokedexInfo = React.memo(props => {
 
         //ABILITIES
         pokemonProperties.abilities = abilities 
-        ? <Abilities key="abilities" abilities={abilities}/>
+        ? <Abilities className={classes.pokemonInfoText} key="abilities" abilities={abilities}/>
         : null;
         
         //pokemon dex entry
@@ -59,43 +81,33 @@ const PokedexInfo = React.memo(props => {
         ?   
             <React.Fragment key="description">
                 <h2>Dex Entry</h2>
-                <DexEntry>
+                <div className={classes.pokemonInfoText}>
                     <p>{description.flavor_text}</p>
-                </DexEntry>
+                </div>
             </React.Fragment>    
         :   <div key="loading">LOADING</div>;
     
-        //evolution chain, stats, moves
-        pokemonProperties.evolutionChain = evoChain 
-            ? showOnClick(EvolutionChain)({evoChain: evoChain, title: "Evolution Chain"}) 
-            : null;
-        pokemonProperties.stats = stats 
-            ? showOnClick(Stats)({stats:stats, title: "Stats"}) 
-            : null;
-        pokemonProperties.moves = moves 
-            ? showOnClick(MoveList)({moves: moves, title: "Move List"})
-            :null;
-        pokemonProperties.eggGroups = egg_groups ? showOnClick(EggGroup)({title:"Egg Group", eggGroups:egg_groups}) : null;    
 
         //Map through all pkmnProperties and render
         const allPkmnProperties = Object.keys(pokemonProperties).map(cur => pokemonProperties[cur]);
         
         //image gif
-        const infoImage =  imageLink !== "http://felixsundqvist.org/pokemon/undefined.gif" 
-            ? <InfoImage imageLink={imageLink} evolutionClick={evolutionClick} /> 
+        const pokemon3DImage =  imageLink !== "http://felixsundqvist.org/pokemon/undefined.gif" 
+            ? <PokemonImage3D imageLink={imageLink} evolutionClick={evolutionClick} /> 
             : null;
 
         const formes = varieties && varieties.length > 1 
         ? (<div className={classes.button}>
         {
         varieties.map(form => 
-            <FormButton 
-                key={form.pokemon.name}
-                onClick={props.evolutionClick}
-                name={form.pokemon.name}
-                >
-                {form.pokemon.name}
-            </FormButton>)
+            form.pokemon.name.includes("totem") 
+            ? <Button 
+                variant="contained" 
+                color="secondary"
+                style={{margin: "8px"}}
+                onClick={() => props.onClick(props.name)}>{props.children}</Button> 
+            : null
+            )
         }
         </div>)
         :  null;
@@ -109,29 +121,33 @@ const PokedexInfo = React.memo(props => {
         return(
             <div className={classes.root}>
                 <Suspense fallback={<p>LOADING</p>}>
-                    {infoImage}
+                    {pokemon3DImage}
                 </Suspense>
                 <h1>{selectedPokemon.name}</h1>
 
                 {pokemonGenus}
                 {types}
                 {formes}
-                
-                <Properties 
+
+                <PokemonInfo
+                    className={classes.pokemonInfoText} 
                     habitat={habitat} 
                     base_happiness={base_happiness} 
                     capture_rate={capture_rate}
                     height={height}
                     weight={weight}
                     types={selectedPokemon.types}
-                ></Properties>
+                 />
                 {allPkmnProperties}
-                
+                <Hidden 
+                    evoChain={evoChain}
+                    stats={stats}
+                    moves={moves}
+                    egg_groups={egg_groups} />
                 <Button 
-                    variant="outlined" 
+                    variant="contained" 
                     color="secondary" 
                     onClick={props.onAddClick}
-                    style={{backgroundColor: "white"}}
                     >Add To Team</Button>
             </div>
         )

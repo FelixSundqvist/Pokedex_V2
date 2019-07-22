@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Title from '../components/PokedexInfo/Title/Title';
+import Title from './Title/Title';
 
 const showOnClick = Component => props => {
     const [show, setShow] = useState(false);

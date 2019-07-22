@@ -4,7 +4,6 @@ import * as actionTypes from '../../store/actions/actionTypes';
 import { makeStyles } from '@material-ui/styles';
 import CardList from '../../components/CardList/CardList';
 
-
 const useStyles = makeStyles(theme => ({
     root: {
         flex:"1",

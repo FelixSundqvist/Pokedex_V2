@@ -15,10 +15,8 @@ const useStyles = makeStyles( theme => ({
 
 export default props => {
     const classes = useStyles();
-
     return (
     <div className={classes.root}>
-        
         <Route path="/" component={Pokedex} />
         <Suspense fallback={<h1>Loading</h1>}>
           <Route path="/id=:id" component={CurrentPokemon} />

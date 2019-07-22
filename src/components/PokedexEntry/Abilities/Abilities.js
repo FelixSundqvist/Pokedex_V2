@@ -2,13 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        border: "2px solid white"
-    },
+
     abilities:{
         padding: theme.spacing() * 2,
         backgroundColor: theme.palette.secondary,
@@ -21,7 +15,7 @@ const useStyles = makeStyles(theme => ({
         margin:theme.spacing()
     }
 }))
-const Abilities = ({ abilities, theme }) => {
+const Abilities = ({ abilities, className }) => {
 
     const classes = useStyles();
 
@@ -37,7 +31,7 @@ const Abilities = ({ abilities, theme }) => {
     return (
         <>
             <h2>Abilities</h2>
-            <div className={classes.root}>{allAbilities}</div>
+            <div className={className}>{allAbilities}</div>
         </>
     )
 }

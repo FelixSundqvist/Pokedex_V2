@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Button } from '@material-ui/core';
-import { useModalStyles, AllTypes } from '../../AddToTeamForm/AddToTeamForm';
+import { useModalStyles, AllTypes } from '../../../containers/AddToTeamForm/AddToTeamForm';
 import PkmnIcon from '../../UI/PkmnIcon/PkmnIcon';
 import pkmnBall from '../../../assets/poke.png';
 import pkmnBallSelected from '../../../assets/pokeSelected.png'

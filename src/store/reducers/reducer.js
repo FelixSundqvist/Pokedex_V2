@@ -73,7 +73,7 @@ const initialState = {
     isLoadingCurrent: false,
     fetchPokemonError: false,
     fetchCurrentPokemonError: false,
-    fetchEvoChainError: false
+    fetchEvoChainError: false,
 }
 const newState = (oldState, newState) =>({
     ...oldState,

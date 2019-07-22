@@ -13,6 +13,7 @@ const App = props => {
       <div className="App">
         <CssBaseline />
         <Layout />
+        
         <AppBar 
           changeTeamOrder={props.changeTeamOrder}
           removePkmn={props.removePkmnFromTeam}

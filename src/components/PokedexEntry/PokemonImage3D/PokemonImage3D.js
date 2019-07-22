@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/styles';
 
-const InfoImage = props => {
+const PokemonImage3D = props => {
     const classes = makeStyles(theme => ({
         root: {
             height: "150px",
@@ -18,4 +18,4 @@ const InfoImage = props => {
 
 }
 
-export default InfoImage;
+export default PokemonImage3D;
