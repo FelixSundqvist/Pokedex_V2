@@ -1,12 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core';
-import AppBar from '../AppBar/AppBar';
+import Pokedex from '../../containers/Pokedex/Pokedex';
 
 const useStyles = makeStyles( theme => ({
     root: {
       width: "100vw",
       minHeight: "100vh",
-      backgroundColor: theme.palette.background
+      backgroundColor: theme.palette.background,
+
     }
 }))
 
@@ -15,7 +16,7 @@ export default props => {
 
     return (
     <div className={classes.root}>
-        <AppBar />
+        <Pokedex />
     </div>
     )
 }
