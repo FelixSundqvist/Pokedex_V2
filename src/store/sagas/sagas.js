@@ -11,7 +11,6 @@ function* startFetchAll(actions){
             .then(res => res.data)
             .then(data => data.results)
        );
-       
         yield put({type: actionTypes.FETCH_PKMN_SUCCESS, pokemons: pokemons})
     }catch(e) {
         yield put({type: actionTypes.FETCH_PKMN_FAIL, error: e})

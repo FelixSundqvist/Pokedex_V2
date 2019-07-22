@@ -8,7 +8,6 @@ const PokemonCard = ({name, id, onClick, selected, children}) => {
         card: {
             height: "100px",
             width: "200px",
-            
             color: "black",
             margin: theme.spacing(),
             textTransform: "capitalize",
@@ -24,7 +23,6 @@ const PokemonCard = ({name, id, onClick, selected, children}) => {
         },
         image: {
             margin: "0 auto",
-
             backgroundRepeat: "no-repeat",
             backgroundSize: "contain",
             backgroundPosition: "50% 50%",
@@ -38,7 +36,7 @@ const PokemonCard = ({name, id, onClick, selected, children}) => {
     <Card 
         className={classes.card}
         onClick={(event) => onClick(event, name)}>
-        <img className={classes.image} src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`} alt={name}/>
+            <img className={classes.image} src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`} alt={name}/>
         <CardContent>
             
             

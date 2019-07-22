@@ -8,5 +8,5 @@ export default props => {
         selected={props.currentGen + 1 === index + 1}>{index + 1}</Button>
     )
     
-    return(<div style={{flexGrow: 1}}><ButtonGroup variant="contained" color="secondary">{gens}</ButtonGroup></div>)
+    return(<div style={{flexGrow: 1, padding: "8px"}}> <p>Generation:</p> <ButtonGroup variant="contained" color="secondary">{gens}</ButtonGroup></div>)
 }

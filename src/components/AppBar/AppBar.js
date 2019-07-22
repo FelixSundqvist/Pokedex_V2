@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import AppBar from '@material-ui/core/AppBar';
+import { DndProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+
 import { makeStyles } from '@material-ui/core/styles';
 import { Toolbar } from '@material-ui/core';
 import GenSelectors from './ChangeGenPage/ChangeGenPage';
@@ -27,16 +30,21 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default props => {
+export default ({pokemonTeam, changeGen, removePkmn, changeTeamOrder })=> {
 
     const [open, setOpen] = useState(false);
     const [selectedSummary, setSelectedSummary] = useState(null);
-
+    const movePokemon = useCallback((dragIndex, hoverIndex) => {
+        const newPkmnTeam = [...pokemonTeam];
+        newPkmnTeam[dragIndex] = {...pokemonTeam[hoverIndex], id: dragIndex}
+        newPkmnTeam[hoverIndex] = {...pokemonTeam[dragIndex], id: hoverIndex}
+        changeTeamOrder(newPkmnTeam); 
+    }, [pokemonTeam, changeTeamOrder])
     const classes = useStyles();
 
     const pokeBallClick = (e, id) => {
         setOpen(true)
-        setSelectedSummary(props.pokemonTeam[id])
+        setSelectedSummary(pokemonTeam[id])
     }
 
     const handleSummaryClose = () => {
@@ -44,22 +52,24 @@ export default props => {
     }
     const onClickChange = (direction, id) => {
         if(direction === "prev" && selectedSummary.id > 0){
-            setSelectedSummary(props.pokemonTeam[selectedSummary.id - 1])
+            setSelectedSummary(pokemonTeam[selectedSummary.id - 1])
         }else if(direction === "next" && selectedSummary.id < 6){
-            setSelectedSummary(props.pokemonTeam[selectedSummary.id + 1])
-        }else if(direction === "set" && id){
-            setSelectedSummary(props.pokemonTeam[id])
+            setSelectedSummary(pokemonTeam[selectedSummary.id + 1])
+        }else if(direction === "set"){
+
+            setSelectedSummary(pokemonTeam[id])
         }
     }
     const pokeballs = Array.from(Array(6), (pokeball, id) => <Pokeball 
         onClick={ (e) => pokeBallClick(e, id)}
-        pokemonInformation={props.pokemonTeam[id] ? props.pokemonTeam[id] : null}    
+        movePokemon={movePokemon}
+        pokemonInformation={pokemonTeam[id] ? pokemonTeam[id] : null}    
         id={id}
          />
     )
     const pkmnSummary =  <PokemonSummary 
-            teamMembers = {props.pokemonTeam.length}
-            removePkmn = { props.removePkmn}
+            teamMembers = {pokemonTeam.length}
+            removePkmn = {removePkmn}
             pokemon = {selectedSummary} 
             open = {open} 
             onClose = {handleSummaryClose} 
@@ -71,8 +81,10 @@ export default props => {
             {pkmnSummary}
             
                 <Toolbar>
-                    <GenSelectors genClick={props.changeGen}  />
-                    <div style={{flex: 1}}>{pokeballs}</div>
+                    <GenSelectors genClick={changeGen}  />
+                    <DndProvider backend={HTML5Backend}>
+                        <div style={{flex: 1, padding: "8px"}}> <p>Team:</p> {pokeballs}</div>
+                    </DndProvider>
                 </Toolbar>
             
         </AppBar>

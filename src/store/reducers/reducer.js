@@ -2,8 +2,66 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     pokemons:[],
-    pokemonTeam:[
-        
+    pokemonTeam:[{
+        IVs: [0, 0, 0, 0, 0, 0],
+        ability: "friend-guard",
+        id: 0,
+        moves: [
+            {move: "pound"},
+            {move: "double-slap"},
+            {move: "mega-punch"},
+            {move: "fire-punch"}],
+        name: "jigglypuff",
+        nature: {name: "Adamant", inc: "attack", dec: "special-attack"},
+        stats: [
+            {base_stat: 20, effort: 0, stat: {name: "speed"}},
+            {base_stat: 25, effort: 0, stat: {name: "special-defense"}},
+            {base_stat: 45, effort: 0, stat: {name: "special-attack"}},
+            {base_stat: 20, effort: 0, stat: {name: "defense"}},
+            {base_stat: 45, effort: 0, stat: {name: "attack"}},
+            {base_stat: 115, effort: 2, stat: {name: "hp"}},
+        ],
+        },
+        {
+            IVs: [0, 0, 0, 0, 0, 0],
+            ability: "friend-guard",
+            id: 1,
+            moves: [
+                {move: "pound"},
+                {move: "double-slap"},
+                {move: "mega-punch"},
+                {move: "fire-punch"}],
+            name: "zubat",
+            nature: {name: "Adamant", inc: "attack", dec: "special-attack"},
+            stats: [
+                {base_stat: 20, effort: 0, stat: {name: "speed"}},
+                {base_stat: 25, effort: 0, stat: {name: "special-defense"}},
+                {base_stat: 45, effort: 0, stat: {name: "special-attack"}},
+                {base_stat: 20, effort: 0, stat: {name: "defense"}},
+                {base_stat: 45, effort: 0, stat: {name: "attack"}},
+                {base_stat: 115, effort: 2, stat: {name: "hp"}},
+            ],
+        },
+        {
+            IVs: [0, 0, 0, 0, 0, 0],
+            ability: "friend-guard",
+            id: 2,
+            moves: [
+                {move: "pound"},
+                {move: "double-slap"},
+                {move: "mega-punch"},
+                {move: "fire-punch"}],
+            name: "ninetales",
+            nature: {name: "Adamant", inc: "attack", dec: "special-attack"},
+            stats: [
+                {base_stat: 20, effort: 0, stat: {name: "speed"}},
+                {base_stat: 25, effort: 0, stat: {name: "special-defense"}},
+                {base_stat: 45, effort: 0, stat: {name: "special-attack"}},
+                {base_stat: 20, effort: 0, stat: {name: "defense"}},
+                {base_stat: 45, effort: 0, stat: {name: "attack"}},
+                {base_stat: 115, effort: 2, stat: {name: "hp"}},
+            ],
+            }
     ],
 
     selectedGen: 0,
@@ -60,6 +118,8 @@ const removeFromTeam = (state, action) => {
 
 }
 
+
+
 const reducer = (state = initialState, action) => {
     const updateState = newState.bind(null, state);
     
@@ -84,6 +144,8 @@ const reducer = (state = initialState, action) => {
             return addToTeam(state, action.addPokemon)
         case(actionTypes.REMOVE_FROM_TEAM):
             return removeFromTeam(state, action)
+        case(actionTypes.CHANGE_TEAM_POSITION):
+            return updateState({pokemonTeam: [...action.newTeam]})
         default:
             return state;
     }

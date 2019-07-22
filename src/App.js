@@ -14,6 +14,7 @@ const App = props => {
         <CssBaseline />
         <Layout />
         <AppBar 
+          changeTeamOrder={props.changeTeamOrder}
           removePkmn={props.removePkmnFromTeam}
           pokemonTeam={props.pokemonTeam} 
           changeGen={(gen) => props.genClick(gen)} />
@@ -29,6 +30,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   removePkmnFromTeam: (id) => dispatch({type: actionTypes.REMOVE_FROM_TEAM, id: id}),
   genClick: (gen) => dispatch({ type: actionTypes.CHANGE_GEN, selectedGen: gen }),
+  changeTeamOrder: (newTeam) => dispatch({type: actionTypes.CHANGE_TEAM_POSITION, newTeam: newTeam})
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

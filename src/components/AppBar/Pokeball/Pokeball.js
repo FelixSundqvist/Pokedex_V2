@@ -1,10 +1,9 @@
 import React from 'react';
 import { ButtonBase, makeStyles } from '@material-ui/core';
-import PkmnIcon from '../../UI/PkmnIcon/PkmnIcon';
+import PkmnIconDraggable from '../../UI/PkmnIcon/PkmnIconDraggable';
 
 const Pokeball = props => {
 
-    
     const classes = makeStyles(theme => ({
         root:{
             flex: "1"
@@ -29,7 +28,7 @@ const Pokeball = props => {
             color="white" 
             className={classes.button}>{
             props.pokemonInformation 
-            ? <PkmnIcon name={props.pokemonInformation.name} /> 
+            ? <PkmnIconDraggable  movePokemon={props.movePokemon} name={props.pokemonInformation.name} pokemon={props.pokemonInformation}/> 
             : null}
         </ButtonBase>
         )
