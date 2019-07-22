@@ -1,10 +1,5 @@
 import React from 'react'
-import styled from 'styled-components';
 
-const StyledDexEntry = styled.div`
-    padding: 2vw;
-    border: 2px solid white;
-`
-const DexEntry = props => <StyledDexEntry>{props.children}</StyledDexEntry>
+const DexEntry = props => <div style={{border: "2px solid white", padding:"16px"}}>{props.children}</div>
 
 export default DexEntry;

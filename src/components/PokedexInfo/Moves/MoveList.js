@@ -1,23 +1,25 @@
 import React from 'react';
-import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core';
+
 
 const MoveListItems = ({moves, show}) => {
-    
-    const MoveListUL = styled.ul`
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    border: 2px solid white;
-    display: ${show ? "block" : "none"};
-    li {
-        padding: 16px;
-    }
 
-    li:nth-child(even) {
-        background-color: white;
-        color: black;
-    }
-    `
+    const classes = makeStyles(theme => ({
+        root: {
+        margin: 0,
+        padding: 0,
+        listStyleType: "none",
+        border: "2px solid white",
+        display:`${show ? "block" : "none"}`
+        },
+        li: {
+            padding: theme.spacing() * 2,
+            "&:nth-child(even)": {
+                backgroundColor: "white",
+                color: "black"
+            }
+        }
+    }))()
 
     let learnedByLevel = moves.filter(cur => {
         return cur.version_group_details[0].level_learned_at !== 0}
@@ -43,13 +45,13 @@ const MoveListItems = ({moves, show}) => {
                 
         }
         return( 
-        <li key={cur.move.name}>
+        <li className={classes.li} key={cur.move.name}>
             {cur.move.name} 
             {learnProperties}
         </li>)
     }
 
-    return(<MoveListUL>{learnedByLevel.map(createListItem)}{learnedByOther.map(createListItem)}</MoveListUL>)
+    return(<ul className={classes.root}>{learnedByLevel.map(createListItem)}{learnedByOther.map(createListItem)}</ul>)
 }
 
 export default MoveListItems;

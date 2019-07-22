@@ -8,9 +8,7 @@ useMemo(() =>
         <PokemonCard 
             onClick={onClick}
             selected={selected}
-            id={
-                index + 1
-                /*getIDFromURL(current.url)*/}
+            id={getIDFromURL(current.url)}
             key={current.name} 
             name={current.name}/>
     )

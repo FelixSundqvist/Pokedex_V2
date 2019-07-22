@@ -1,22 +1,25 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import PokedexInfo from '../../components/PokedexInfo/PokedexInfo';
 import * as actionTypes from '../../store/actions/actionTypes';
 import { makeStyles } from '@material-ui/styles';
+import Loading from '../../components/UI/Loading/Loading';
+import ErrorHandler from '../../components/UI/ErrorHandler/ErrorHandler';
+import AddToTeamForm from '../../components/AddToTeamForm/AddToTeamForm';
 
-/* import AddToTeamForm from '../AddToTeamForm/AddToTeamForm';
- */
-
- const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => ({
      root:{
+        position: "relative",
         minHeight: "100%",
-        width: "100%",
+        flex: 1,
         color: "white",
         textTransform: "capitalize",
+        padding: theme.spacing() * 4
      }
  }))
 const CurrentPokemon = React.memo((
     {
+        addPokemonToTeam,
         selectedPokemon, 
         pokedexInfo,
         isLoadingCurrent,
@@ -26,8 +29,7 @@ const CurrentPokemon = React.memo((
         evoChain,
         fetchCurrentPokemonError
     }) => {
-    const [currentPkmn, setPkmn] = useState(null);
-
+    const [open, setOpen] = React.useState(false);
     const fetch = useCallback(
         () => {
             fetchSelectedPokemon(match.params.id);
@@ -35,23 +37,37 @@ const CurrentPokemon = React.memo((
     )
     
     useEffect(() => { fetch() }, [fetch])
+    
     const classes = useStyles();
-    let pokemon = null;
-    //<Loading />
-    /* addToTeam={(pokemon) => setPkmn(<AddToTeamForm setPkmn={setPkmn} pokemon={pokemon} />)} */
+ 
+    const handleClose = () => setOpen(false);
+    const handleOnAddClick = () => setOpen(true);
+    
+    let pokemon = <Loading />;
+    
     if(!isLoadingCurrent && !fetchCurrentPokemonError){
-        pokemon = <PokedexInfo 
+        pokemon = (
+        <PokedexInfo 
             pokedexInfo={pokedexInfo} 
             selectedPokemon={selectedPokemon}
             evoChain={evoChain}
-            evolutionClick={(id) => history.push("/id="+id)} /> 
+            onAddClick={handleOnAddClick}
+            evolutionClick={(id) => history.push("/id="+id)} /> )
     }else if(fetchCurrentPokemonError){
-        pokemon = null
-    }             
-    
+        pokemon = <ErrorHandler error1 />
+    }        
+    const addToTeam = open 
+    ? <AddToTeamForm 
+        addPokemonToTeam={addPokemonToTeam}
+        setOpen={setOpen}
+        open={open} 
+        onClose={handleClose} 
+        pokemon={{...selectedPokemon, ...pokedexInfo, name: selectedPokemon.name}} />
+    : null;
+
     return (
         <>
-        {currentPkmn}
+        {addToTeam}
         <div className={classes.root}> 
             {pokemon}
         </div>
@@ -70,6 +86,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     fetchSelectedPokemon: (id) => dispatch({type: actionTypes.FETCH_CURRENT_PKMN_START, id: id}),
+    addPokemonToTeam: (pokemon) => dispatch({type: actionTypes.ADD_TO_TEAM, addPokemon: pokemon}),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentPokemon);

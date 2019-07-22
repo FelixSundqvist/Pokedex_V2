@@ -1,19 +1,34 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Theme from './theme';
 import Layout from './components/Layout/Layout';
 import AppBar from './components/AppBar/AppBar';
+import * as actionTypes from './store/actions/actionTypes';
+import './index.css';
 
-function App() {
+const App = props => {
   return (
     <Theme>
       <div className="App">
         <CssBaseline />
         <Layout />
-        <AppBar />
+        <AppBar 
+          removePkmn={props.removePkmnFromTeam}
+          pokemonTeam={props.pokemonTeam} 
+          changeGen={(gen) => props.genClick(gen)} />
       </div>
     </Theme>
   );
 }
+const mapStateToProps = state => ({
+  pokemonTeam: state.pokemonTeam,
+  currentGen: state.selectedGen
+})
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  removePkmnFromTeam: (id) => dispatch({type: actionTypes.REMOVE_FROM_TEAM, id: id}),
+  genClick: (gen) => dispatch({ type: actionTypes.CHANGE_GEN, selectedGen: gen }),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

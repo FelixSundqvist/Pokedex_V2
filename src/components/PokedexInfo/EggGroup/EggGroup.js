@@ -1,21 +1,25 @@
 import React from 'react'
-import styled from 'styled-components';
+import { makeStyles } from '@material-ui/styles';
 
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: "flex",
+        justifyContent: "center",
+        color: "white",
+        textTransform: "capitalize",
+    },
+    eggGroup:{
+        padding: theme.spacing() * 2,
+        margin: theme.spacing(),
+        border: "2px solid white"
+    }
+
+}))
 const EggGroup = ({ eggGroups }) => {
-    const Wrapper = styled.div`
-        display: flex;
-        border: 2px solid white;
-        justify-content: center;
-    `
-    const StyledEggGroup = styled.div`
-        padding: 16px;
-        margin: 8px;
-        border: 2px solid white;
-    `
-
-    return <Wrapper>
-        {eggGroups.map(cur => <StyledEggGroup key={cur.name}>{cur.name}</StyledEggGroup>)}
-    </Wrapper>
+    const classes = useStyles();
+    return <div className={classes.root}>
+        {eggGroups.map(cur => <div className={classes.eggGroup} key={cur.name}>{cur.name}</div>)}
+    </div>
 }
 
 export default EggGroup;

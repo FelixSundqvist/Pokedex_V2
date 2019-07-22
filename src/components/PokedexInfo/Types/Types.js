@@ -1,18 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        padding: theme.spacing(),
+        margin: theme.spacing(),
+        border: "2px solid black",
+        flex: 1,
+        color: "white",
+        textTransform: "uppercase",
+        fontFamily: "sans-serif",
+    }
+}))
 
 const Types = ({ type }) => {
-    const StyledTypes = styled.span`
-        padding: 8px;
-        border: 2px solid black;
-        border-radius: 1vw;
-        width: 25px;
-        height: 10px;
-        margin: 8px;
-        color: white;
-        text-transform: uppercase;
-        font-family: sans-serif;
-    `
+    const classes = useStyles();
     let bgColor = "#BFBCB6";
     switch(type){
         case("bug"): 
@@ -72,7 +74,7 @@ const Types = ({ type }) => {
         default:
             bgColor = "white";
     }
-    return(<StyledTypes style={{backgroundColor: bgColor}}>{type}</StyledTypes>)
+    return(<div className={classes.root} style={{backgroundColor: bgColor}}>{type}</div>)
 }
 
 export default Types;

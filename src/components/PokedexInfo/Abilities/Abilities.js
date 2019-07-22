@@ -1,42 +1,45 @@
 import React from 'react';
-import styled, { withTheme } from 'styled-components';
+import { makeStyles } from '@material-ui/core';
 
+const useStyles = makeStyles(theme => ({
+    root: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        border: "2px solid white"
+    },
+    abilities:{
+        padding: theme.spacing() * 2,
+        backgroundColor: theme.palette.secondary,
+        margin: theme.spacing(),
+    },
+    hiddenAbility: {
+        padding: theme.spacing() * 2,
+        backgroundColor: theme.palette.secondary,
+        opacity: 0.3,
+        margin:theme.spacing()
+    }
+}))
 const Abilities = ({ abilities, theme }) => {
-    
-    const AbilityWrapper = styled.div`
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    `
-    const StyledAbilities = styled.div`
-        padding: 16px;
-        background-color: ${theme.palette.secondary};
-        margin: 8px;
-    `
-    
-    const StyledHiddenAbilities = styled.div`
-        padding: 16px;
-        background-color: ${theme.palette.secondary};
-        opacity: 0.3;
-        margin: 8px;
-    `
+
+    const classes = useStyles();
 
     const allAbilities = abilities
         .map(cur => !cur.is_hidden 
-            ? <StyledAbilities key={cur.ability.name}>{cur.ability.name}</StyledAbilities> 
+            ? <div className={classes.abilities} key={cur.ability.name}>{cur.ability.name}</div> 
             :<React.Fragment key={cur.ability.name}>
                 <p>Hidden: </p>
-                <StyledHiddenAbilities>{cur.ability.name}</StyledHiddenAbilities>
+                <div className={classes.hiddenAbility}>{cur.ability.name}</div>
             </React.Fragment>)
         .reverse()
 
     return (
         <>
-            <h3>Abilities</h3>
-            <AbilityWrapper>{allAbilities}</AbilityWrapper>
+            <h2>Abilities</h2>
+            <div className={classes.root}>{allAbilities}</div>
         </>
     )
 }
 
-export default withTheme(Abilities);
+export default Abilities;
