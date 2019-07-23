@@ -8,15 +8,15 @@ const PokemonCard = ({name, id, onClick, selected, children}) => {
         card: {
             height: "100px",
             width: "200px",
-            color: "black",
+            color: "white",
             margin: theme.spacing(),
             textTransform: "capitalize",
             "&:hover":{
                 cursor: "pointer",
-                opacity: 0.8
+                backgroundColor: "rgba(255, 255, 255, .3)"
             },
             transition: "opacity 100ms ease",
-            backgroundColor: "white",
+            border: "2px solid white",
             display: "flex",
             justifyItems: "center",
             alignContent:"center"

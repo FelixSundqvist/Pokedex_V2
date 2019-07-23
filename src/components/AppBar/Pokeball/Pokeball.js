@@ -14,7 +14,10 @@ const Pokeball = props => {
             width: "40px",
             color: "black",
             backgroundColor: "white",
-            margin: theme.spacing()
+            margin: theme.spacing(),
+            [theme.breakpoints.down("md")]: {
+                margin: theme.spacing() / 2,
+            }
         }
     }))()
 

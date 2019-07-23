@@ -8,14 +8,20 @@ import ErrorHandler from '../../components/UI/ErrorHandler/ErrorHandler';
 import AddToTeamForm from '../AddToTeamForm/AddToTeamForm';
 
 const useStyles = makeStyles(theme => ({
-     root:{
+    root:{
         position: "relative",
-        minHeight: "100%",
         flex: 1,
+        maxHeight: "100vh",
         color: "white",
+        overflow: "scroll",
         textTransform: "capitalize",
         padding: theme.spacing() * 4
-     }
+    },
+    wrapper: {
+        [theme.breakpoints.down("sm")]: {
+            maxHeight: "50vh",
+        }
+    }
  }))
 const CurrentPokemon = React.memo((
     {
@@ -64,13 +70,12 @@ const CurrentPokemon = React.memo((
     : null;
 
     return (
-        <>
-        {addToTeam}
         <div className={classes.root}>
-
+        {addToTeam}
+        <div className={classes.wrapper}>
             {pokemon}
         </div>
-        </>
+        </div>
     )
 });
 

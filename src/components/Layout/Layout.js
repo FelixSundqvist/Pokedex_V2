@@ -7,9 +7,13 @@ import CurrentPokemon from '../../containers/CurrentPokemon/CurrentPokemon';
 const useStyles = makeStyles( theme => ({
     root: {
       width: "100vw",
-      minHeight: "100vh",
+      height: "auto",
+      overflow: "none",
       backgroundColor: theme.palette.background,
-      display: "flex"
+      display: "flex",
+      [theme.breakpoints.down("md")]: {
+        flexDirection: "column-reverse"
+      }
     }
 }))
 

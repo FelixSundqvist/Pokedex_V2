@@ -6,14 +6,21 @@ import CardList from '../../components/CardList/CardList';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        flex:"1",
-        height: "100%",
-        display: "flex",
+        flex: 1,
+        maxHeight: "100vh",
         overflow: "scroll",
+
+        margin: theme.spacing() * 2
+    },
+    wrapper: {
+        padding: theme.spacing() * 4,
+        display: "flex",
         flexWrap: "wrap",
         alignItems: "center",
-        padding: theme.spacing() * 4,
-        margin: theme.spacing() * 2
+        [theme.breakpoints.down("sm")]: {
+            justifyContent: "center",
+            maxHeight: "50vh",
+        }
     }
 }))
 const Pokedex = props => {
@@ -33,8 +40,7 @@ const Pokedex = props => {
             items = {props.pokemons} /> 
     : null;
     
-    
-    return <div className={classes.root}>{pokemons}</div>
+    return <div className={classes.root}><div className={classes.wrapper}>{pokemons}</div></div>
 }
 const mapStateToProps = (state) => ({
     pokemons: state.pokemons,
