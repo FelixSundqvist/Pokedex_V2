@@ -1,32 +1,32 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import AppBar from '@material-ui/core/AppBar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Toolbar } from '@material-ui/core';
+import { Toolbar, IconButton } from '@material-ui/core';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
+import MenuIcon from '@material-ui/icons/Menu';
+import ClearIcon from '@material-ui/icons/Clear';
 import GenSelectors from './ChangeGenPage/ChangeGenPage';
 import Pokeball from './Pokeball/Pokeball';
-import PokemonSummary from './PokemonSummary/PokemonSummary';
-
+import PokemonTeam from '../../containers/PokemonTeam/PokemonTeam';
 const useStyles = makeStyles(theme => ({
     root: {
         backgroundColor: theme.palette.primary.main,
         top: 'auto',
         bottom: 0,
+    },
+    appBar: {
         [theme.breakpoints.down("md")]: {
-            top: 0,
-            bottom: "auto",
+            flexDirection: "column",
+            padding: theme.spacing()
         }
     },
     iconButton: {
         position: "fixed",
         right: 0,
-        bottom: 0,
+        top: 0,
         margin: theme.spacing(),
-        border: "2px solid white",
-        backgroundColor: theme.palette.secondary.main,
         color: "white",
         "&:hover": {
             backgroundColor: theme.palette.primary.main
@@ -34,40 +34,35 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default ({pokemonTeam, changeGen, removePkmn, changeTeamOrder })=> {
+export default ({pokemonTeam, changeGen, changeTeamOrder })=> {
 
     const [openPkmnSummary, setOpenPkmnSummary] = useState(false);
-    const [selectedSummary, setSelectedSummary] = useState(null);
     const [showAppbar, setShowAppBar] = useState(true);
-
+    const [selectedSummary, setSelectedSummary] = useState(null);
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('md'));
-    console.log(matches)
+    
     const movePokemon = useCallback((dragIndex, hoverIndex) => {
         const newPkmnTeam = [...pokemonTeam];
         newPkmnTeam[dragIndex] = {...pokemonTeam[hoverIndex], id: dragIndex}
         newPkmnTeam[hoverIndex] = {...pokemonTeam[dragIndex], id: hoverIndex}
         changeTeamOrder(newPkmnTeam); 
+
     }, [pokemonTeam, changeTeamOrder])
+
     const classes = useStyles();
+
+    useEffect(() => {
+        if(matches){
+            setShowAppBar(false);
+        }
+    }, [matches])
 
     const pokeBallClick = (e, id) => {
         setOpenPkmnSummary(true)
         setSelectedSummary(pokemonTeam[id])
     }
 
-    const handleSummaryClose = () => {
-        setOpenPkmnSummary(false)
-    }
-    const onClickChange = (direction, id) => {
-        if(direction === "prev" && selectedSummary.id > 0){
-            setSelectedSummary(pokemonTeam[selectedSummary.id - 1])
-        }else if(direction === "next" && selectedSummary.id < 6){
-            setSelectedSummary(pokemonTeam[selectedSummary.id + 1])
-        }else if(direction === "set"){
-            setSelectedSummary(pokemonTeam[id])
-        }
-    }
     const pokeballs = Array.from(Array(6), (pokeball, id) => <Pokeball
         key={"pokeball"+id} 
         onClick={ (e) => pokeBallClick(e, id)}
@@ -76,24 +71,38 @@ export default ({pokemonTeam, changeGen, removePkmn, changeTeamOrder })=> {
         id={id}
          />
     )
-    const pkmnSummary =  <PokemonSummary 
-            teamMembers = {pokemonTeam.length}
-            removePkmn = {removePkmn}
-            pokemon = {selectedSummary} 
+    const pkmnSummary = openPkmnSummary ? <PokemonTeam 
+            mode = "view"
+            selectedSummary = {selectedSummary} 
+            setSelectedSummary = {setSelectedSummary}
             open = {openPkmnSummary} 
-            onClose = {handleSummaryClose} 
-            onClickChange = {onClickChange}
-        />
-
+            onClose = {() => setOpenPkmnSummary(false)} 
+        /> : null;
+        
+    const icon = !showAppbar ? <MenuIcon /> : <ClearIcon />
     return (
-        <AppBar className={classes.root} style={{display: matches ? "block" : "none"}} >
+        <>
+            <IconButton 
+                edge="start" 
+                color="inherit" 
+                className={classes.iconButton} 
+                onClick={() => setShowAppBar(!showAppbar)}
+            >
+                {icon}
+            </IconButton>
+            
+            <AppBar className={classes.root} style={{display: showAppbar ? "block" : "none"}} >
             {pkmnSummary}
-                <Toolbar>
-                    <GenSelectors genClick={changeGen}  />
-                    <DndProvider backend={HTML5Backend}>
-                        <div style={{flex: 1}}>{pokeballs}</div>
-                    </DndProvider>
-                </Toolbar>
-        </AppBar>
+                    <Toolbar className={classes.appBar}>
+                        <GenSelectors genClick={changeGen} />
+                        <DndProvider backend={HTML5Backend}>
+                            <div style={ 
+                                {
+                                    flex: 1 
+                                } }>{pokeballs}</div>
+                        </DndProvider>
+                    </Toolbar>
+            </AppBar>
+        </>
     )
 }

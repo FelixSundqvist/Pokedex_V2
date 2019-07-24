@@ -12,7 +12,8 @@ const useStyles = makeStyles( theme => ({
       backgroundColor: theme.palette.background,
       display: "flex",
       [theme.breakpoints.down("md")]: {
-        flexDirection: "column-reverse"
+        flexDirection: "column-reverse",
+        backgroundColor: theme.palette.primary.main
       }
     }
 }))

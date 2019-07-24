@@ -5,7 +5,7 @@ import * as actionTypes from '../../store/actions/actionTypes';
 import { makeStyles } from '@material-ui/styles';
 import Loading from '../../components/UI/Loading/Loading';
 import ErrorHandler from '../../components/UI/ErrorHandler/ErrorHandler';
-import AddToTeamForm from '../AddToTeamForm/AddToTeamForm';
+import PokemonTeam from '../PokemonTeam/PokemonTeam';
 
 const useStyles = makeStyles(theme => ({
     root:{
@@ -15,17 +15,22 @@ const useStyles = makeStyles(theme => ({
         color: "white",
         overflow: "scroll",
         textTransform: "capitalize",
-        padding: theme.spacing() * 4
+        padding: theme.spacing() * 4,
+        backgroundColor: theme.palette.background,
+        [theme.breakpoints.down("sm")]: {
+            width: "100vw",
+            margin: "0 auto",
+        }
     },
     wrapper: {
         [theme.breakpoints.down("sm")]: {
+            height: "50vh",
             maxHeight: "50vh",
         }
     }
  }))
 const CurrentPokemon = React.memo((
     {
-        addPokemonToTeam,
         selectedPokemon, 
         pokedexInfo,
         isLoadingCurrent,
@@ -43,39 +48,42 @@ const CurrentPokemon = React.memo((
     )
     useEffect(() => { fetch() }, [fetch])
     const classes = useStyles();
- 
-    const handleClose = () => setOpen(false);
-    const handleOnAddClick = () => setOpen(true);
-    
+    let addToTeam = open
+    ? <PokemonTeam
+            mode="add"
+            setOpen={setOpen}
+            open={open} 
+            onClose={() => setOpen(false)} />
+    : null;
+
     let pokemon = <Loading />;
     
     if(!isLoadingCurrent && !fetchCurrentPokemonError){
+
         pokemon = (
+            
         <PokedexEntry 
             pokedexInfo={pokedexInfo} 
             selectedPokemon={selectedPokemon}
             evoChain={evoChain}
-            onAddClick={handleOnAddClick}
-            evolutionClick={(id) => history.push("/id="+id)} /> )
+            onAddClick={() => setOpen(true)}
+            evolutionClick={(id) => history.push("/id="+id)}
+        /> )
+    
     }else if(fetchCurrentPokemonError){
         pokemon = <ErrorHandler error1 />
     }        
-    const addToTeam = open 
-    ? <AddToTeamForm 
-        addPokemonToTeam={addPokemonToTeam}
-        setOpen={setOpen}
-        open={open} 
-        onClose={handleClose} 
-        pokemon={{...selectedPokemon, ...pokedexInfo, name: selectedPokemon.name}} />
-    : null;
 
     return (
+    <>
+    {addToTeam}
         <div className={classes.root}>
-        {addToTeam}
-        <div className={classes.wrapper}>
-            {pokemon}
+            <div className={classes.wrapper}>
+                {pokemon}
+            </div>
         </div>
-        </div>
+    
+    </>
     )
 });
 
@@ -89,8 +97,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchSelectedPokemon: (id) => dispatch({type: actionTypes.FETCH_CURRENT_PKMN_START, id: id}),
-    addPokemonToTeam: (pokemon) => dispatch({type: actionTypes.ADD_TO_TEAM, addPokemon: pokemon}),
+    fetchSelectedPokemon: (id) => dispatch({type: actionTypes.FETCH_CURRENT_PKMN_START, id: id})
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentPokemon);

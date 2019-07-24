@@ -12,8 +12,7 @@ const useStyles = makeStyles(theme => ({
         height: "100%",
         color: "white",
         fontSize: "2vw",
-        zIndex: 9999,
-        margin: theme.spacing() * 2
+        margin: "0 auto"
     },
     image: {
         margin: "0 auto"

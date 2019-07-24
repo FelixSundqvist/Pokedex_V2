@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
         flex: 1,
         maxHeight: "100vh",
         overflow: "scroll",
-
+        backgroundColor: theme.palette.background,
         margin: theme.spacing() * 2
     },
     wrapper: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
         }
     }
 }))
-const Pokedex = props => {
+const Pokedex = React.memo(props => {
     const { fetchAllPokemons, selectedGen  } = props;
     
     useEffect(() => {
@@ -41,7 +41,8 @@ const Pokedex = props => {
     : null;
     
     return <div className={classes.root}><div className={classes.wrapper}>{pokemons}</div></div>
-}
+});
+
 const mapStateToProps = (state) => ({
     pokemons: state.pokemons,
     selectedGen: state.selectedGen,

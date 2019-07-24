@@ -1,74 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/styles';
 import { Modal, Button } from '@material-ui/core';
 import { natures } from '../../utility/natures/natures';
 import PkmnIcon from '../../components/UI/PkmnIcon/PkmnIcon';
 import Types from '../../components/PokedexEntry/hidden/Types/Types';
-
-export const useModalStyles = makeStyles(theme => ({
-    root: {
-        height: "100%",
-        maxWidth: "80vw",
-        backgroundColor: "white", 
-        overflow: "scroll",
-        textAlign: "center",
-        padding: theme.spacing() * 4,
-        margin: `${theme.spacing() * 2}px auto`,
-    }, 
-    itemWrapper: {
-        width: "90%",
-        height: "auto",
-        padding: theme.spacing() * 2,
-        margin: "16px auto",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexWrap: "wrap",
-        boxShadow: "2px 2px 4px 2px #ccc",
-    },
-    statsWrapper: {
-        width: "90%",
-        margin: "0 auto",
-        padding: theme.spacing() * 2,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        boxShadow: "2px 2px 4px 2px #ccc",
-    },
-    move:{
-        borderRadius: "1vh",
-        flex: "0 0 40%",
-        border: "2px solid black",
-        padding: "16px",
-        margin: "8px",
-        textTransform: "capitalize",
-    },
-    title: {
-        textTransform: "capitalize"
-    },
-    select: {
-        padding: theme.spacing(),
-        margin: theme.spacing() * 2
-    },
-    stats: {
-        padding: theme.spacing(),
-        width: "100%",
-        textAlign: "left",
-        display: "flex",
-    },
-    changeStats: {
-        display: "block",
-        flex: 1,
-        justifySelf: "flex-end",
-        alignSelf: "flex-end"
-    },
-    hover: {
-        "&:hover":{
-            cursor: "pointer"
-        }
-    }
-}))
 
 export const AllTypes = ({types}) => {
     const typeWrapper = {
@@ -82,10 +16,11 @@ export const AllTypes = ({types}) => {
                 .reverse()
             }
         </div>
-        )
+    )
 }
 
-const AddToTeamForm = ({ pokemon, addPokemonToTeam, open, onClose, setOpen }) => {
+const ConfigureTeam = React.memo(({ pokemon, configurePokemon, open, onClose, setOpen, classes, mode }) => {
+    
     const [ pokemonMoves, setPokemonMoves ] = useState([
         {move: ""},
         {move: ""},
@@ -108,8 +43,6 @@ const AddToTeamForm = ({ pokemon, addPokemonToTeam, open, onClose, setOpen }) =>
         setPokeAbility(pokemon.abilities[0].ability.name);
         setSelectedNature(natures[0])
     }, [pokemon.abilities, pokemon.moves])
-    
-    const classes = useModalStyles();
 
     const changeMove = (e, id) => {
         e.preventDefault();
@@ -179,10 +112,10 @@ const AddToTeamForm = ({ pokemon, addPokemonToTeam, open, onClose, setOpen }) =>
         </select>
     </div>)
 
-    const submit = (pokemonMoves) => {
+    const config = () => {
         setOpen(false)
 
-        addPokemonToTeam(
+        configurePokemon(
             {
                 name: pokemon.name, 
                 moves: pokemonMoves, 
@@ -192,10 +125,9 @@ const AddToTeamForm = ({ pokemon, addPokemonToTeam, open, onClose, setOpen }) =>
                 IVs: pokemonIV
             }
         )
-    }
 
+    }
 return (
-    <>
     <Modal
         open={open}
         onClose={onClose}>
@@ -219,13 +151,15 @@ return (
             <div className={classes.itemWrapper}>
                 {moves}
             </div>
-                <Button variant="contained" onClick={() => submit(pokemonMoves)}>Add</Button>
+                {mode === "add" 
+                    ? <Button variant="contained" onClick={() => config()}>Add</Button>
+                    : <Button variant="contained" onClick={() => {config(); onClose()}}>Done</Button>
+                }
             </div>
         </div>
-    </Modal>
-    </>)
+    </Modal>)
 
 
-}
+})
 
-export default AddToTeamForm;
+export default ConfigureTeam;

@@ -1,17 +1,34 @@
 import * as actionTypes from '../actions/actionTypes';
-
-const initialState = {
-    pokemons:[],
-    pokemonTeam:[{
+const pokemonTeam = process.env.NODE_ENV  === "development" ? [{
+    IVs: [0, 0, 0, 0, 0, 0],
+    ability: "friend-guard",
+    id: 0,
+    moves: [
+        {move: "pound"},
+        {move: "double-slap"},
+        {move: "mega-punch"},
+        {move: "fire-punch"}],
+    name: "jigglypuff",
+    nature: {name: "Adamant", inc: "attack", dec: "special-attack"},
+    stats: [
+        {base_stat: 20, effort: 0, stat: {name: "speed"}},
+        {base_stat: 25, effort: 0, stat: {name: "special-defense"}},
+        {base_stat: 45, effort: 0, stat: {name: "special-attack"}},
+        {base_stat: 20, effort: 0, stat: {name: "defense"}},
+        {base_stat: 45, effort: 0, stat: {name: "attack"}},
+        {base_stat: 115, effort: 2, stat: {name: "hp"}},
+    ],
+    },
+    {
         IVs: [0, 0, 0, 0, 0, 0],
         ability: "friend-guard",
-        id: 0,
+        id: 1,
         moves: [
             {move: "pound"},
             {move: "double-slap"},
             {move: "mega-punch"},
             {move: "fire-punch"}],
-        name: "jigglypuff",
+        name: "zubat",
         nature: {name: "Adamant", inc: "attack", dec: "special-attack"},
         stats: [
             {base_stat: 20, effort: 0, stat: {name: "speed"}},
@@ -21,52 +38,36 @@ const initialState = {
             {base_stat: 45, effort: 0, stat: {name: "attack"}},
             {base_stat: 115, effort: 2, stat: {name: "hp"}},
         ],
-        },
-        {
-            IVs: [0, 0, 0, 0, 0, 0],
-            ability: "friend-guard",
-            id: 1,
-            moves: [
-                {move: "pound"},
-                {move: "double-slap"},
-                {move: "mega-punch"},
-                {move: "fire-punch"}],
-            name: "zubat",
-            nature: {name: "Adamant", inc: "attack", dec: "special-attack"},
-            stats: [
-                {base_stat: 20, effort: 0, stat: {name: "speed"}},
-                {base_stat: 25, effort: 0, stat: {name: "special-defense"}},
-                {base_stat: 45, effort: 0, stat: {name: "special-attack"}},
-                {base_stat: 20, effort: 0, stat: {name: "defense"}},
-                {base_stat: 45, effort: 0, stat: {name: "attack"}},
-                {base_stat: 115, effort: 2, stat: {name: "hp"}},
-            ],
-        },
-        {
-            IVs: [0, 0, 0, 0, 0, 0],
-            ability: "friend-guard",
-            id: 2,
-            moves: [
-                {move: "pound"},
-                {move: "double-slap"},
-                {move: "mega-punch"},
-                {move: "fire-punch"}],
-            name: "ninetales",
-            nature: {name: "Adamant", inc: "attack", dec: "special-attack"},
-            stats: [
-                {base_stat: 20, effort: 0, stat: {name: "speed"}},
-                {base_stat: 25, effort: 0, stat: {name: "special-defense"}},
-                {base_stat: 45, effort: 0, stat: {name: "special-attack"}},
-                {base_stat: 20, effort: 0, stat: {name: "defense"}},
-                {base_stat: 45, effort: 0, stat: {name: "attack"}},
-                {base_stat: 115, effort: 2, stat: {name: "hp"}},
-            ],
-            }
-    ],
+    },
+    {
+        IVs: [0, 0, 0, 0, 0, 0],
+        ability: "friend-guard",
+        id: 2,
+        moves: [
+            {move: "pound"},
+            {move: "double-slap"},
+            {move: "mega-punch"},
+            {move: "fire-punch"}],
+        name: "ninetales",
+        nature: {name: "Adamant", inc: "attack", dec: "special-attack"},
+        stats: [
+            {base_stat: 20, effort: 0, stat: {name: "speed"}},
+            {base_stat: 25, effort: 0, stat: {name: "special-defense"}},
+            {base_stat: 45, effort: 0, stat: {name: "special-attack"}},
+            {base_stat: 20, effort: 0, stat: {name: "defense"}},
+            {base_stat: 45, effort: 0, stat: {name: "attack"}},
+            {base_stat: 115, effort: 2, stat: {name: "hp"}},
+        ],
+        }]
+    : [];
 
+const initialState = {
+    pokemons:[],
+    pokemonTeam: pokemonTeam,
     selectedGen: 0,
     selectedPokemonId: "",
     selectedPokemon: {},
+    editPokemon: {},
     pokedexInfo: {},
     evolutionChain: {},
     isLoadingPokemons: false,
@@ -115,11 +116,23 @@ const removeFromTeam = (state, action) => {
         pokemonTeam: [...state.pokemonTeam]
         .filter(currentPokemon => currentPokemon.id !== action.id)
     }
-
 }
 
+const editTeam = (state, action) => {
+    const newTeam = [...state.pokemonTeam]
+    newTeam.splice(action.index, 1, {...action.edited, id: action.index})
+    return {
+        ...state,
+        pokemonTeam: newTeam
+    }
+}
 
-
+const fetchEditSuccess = (state, action) => {
+    return {
+        ...state,
+        editPokemon: {...state.editPokemon, ...action.editPokemon}
+    }
+}
 const reducer = (state = initialState, action) => {
     const updateState = newState.bind(null, state);
     
@@ -146,6 +159,10 @@ const reducer = (state = initialState, action) => {
             return removeFromTeam(state, action)
         case(actionTypes.CHANGE_TEAM_POSITION):
             return updateState({pokemonTeam: [...action.newTeam]})
+        case(actionTypes.EDIT_TEAM):
+            return editTeam(state, action)
+        case(actionTypes.FETCH_EDIT_PKMN_SUCCESS):
+            return fetchEditSuccess(state, action)
         default:
             return state;
     }
