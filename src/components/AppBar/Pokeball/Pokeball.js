@@ -31,7 +31,7 @@ const Pokeball = props => {
             color="white" 
             className={classes.button}>{
             props.pokemonInformation 
-            ? <PkmnIconDraggable  movePokemon={props.movePokemon} name={props.pokemonInformation.name} pokemon={props.pokemonInformation}/> 
+            ? <PkmnIconDraggable movePokemon={props.movePokemon} name={props.pokemonInformation.name} pokemon={props.pokemonInformation}/> 
             : null}
         </ButtonBase>
         )

@@ -1,5 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-
+import React, { 
+    useState, 
+    useEffect, 
+    useRef, 
+    useCallback } from 'react';
+    
 import {
     Modal, 
     Button, 
@@ -16,6 +20,7 @@ import {
 import { natures } from '../../utility/natures/natures';
 import PkmnIcon from '../../components/UI/PkmnIcon/PkmnIcon';
 import Types from '../../components/PokedexEntry/hidden/Types/Types';
+import { calculateStats } from '../../utility';
 
 const AllTypes = ({ types }) => {
     const typeWrapper = {
@@ -43,15 +48,13 @@ const ConfigureTeam = React.memo(({ pokemon, configurePokemon, open, onClose, se
     ])
     const [pokeAbility, setPokeAbility] = useState("");
     const [selectedNature, setSelectedNature ] = useState("")
-    const [movesWarning, setMovesWarning] = useState(null)
+
+    const [movesWarning, setMovesWarning] = useState(false)
     const [EVWarning, setEVWarning] = useState(false)
+    
     const [pokemonIV, setPokemonIV] = useState([0, 0, 0, 0, 0, 0])
     const [pokemonEV, setPokemonEV] = useState([0, 0, 0, 0, 0, 0])
     const [pokemonLevel, setPokemonLevel] = useState(100);
-
-    useEffect(() => {
-        
-    }, [])
 
     useEffect(() => {
         setPokemonMoves([
@@ -84,6 +87,15 @@ const ConfigureTeam = React.memo(({ pokemon, configurePokemon, open, onClose, se
     }, [pokemonEV, evCheck])
     const sliderRef = useRef(null)
 
+    const statsCalculated = calculateStats(
+        {
+            stats: pokemon.stats, 
+            EVs: pokemonEV, 
+            IVs: pokemonIV, 
+            level: pokemonLevel, 
+            nature: selectedNature 
+        })
+   
     const sliderValueCheck = (event, newValue, index) => {
         let newSliderValue = null
         
@@ -134,6 +146,7 @@ const ConfigureTeam = React.memo(({ pokemon, configurePokemon, open, onClose, se
             <TableCell>{stat.base_stat}</TableCell>
             <TableCell>{pokemonIV[index]}</TableCell>
             <TableCell>{pokemonEV[index]}</TableCell>
+            <TableCell>{statsCalculated[index].stat}</TableCell>
         </TableRow>
     )
     const editStats = pokemon.stats.map((stat, index ) => 
@@ -176,7 +189,7 @@ const ConfigureTeam = React.memo(({ pokemon, configurePokemon, open, onClose, se
                     variant='filled' 
                     onChange={(e) => {
                         const ivs = [...pokemonIV];
-                        ivs[index] = e.target.value;
+                        ivs[index] = +e.target.value;
                         setPokemonIV(ivs)}
                     }>
                     {ivs}
@@ -287,6 +300,7 @@ const ConfigureTeam = React.memo(({ pokemon, configurePokemon, open, onClose, se
                                 <TableCell>Base: </TableCell>
                                 <TableCell>IV's</TableCell>
                                 <TableCell>EV's</TableCell>
+                                <TableCell>TOTAL</TableCell>
                             </TableRow>
                         </TableHead>
 

@@ -103,7 +103,7 @@ export default ({pokemonTeam, changeGen, changeTeamOrder })=> {
                             <div style={{flex: 1}}>{pokeballs}</div>
                         </DndProvider>
                         <div>
-                            <Button onClick={() => FileSave.saveAs(blob, `team${Date.now()}.json` )} >Download Team</Button>
+                            <Button onClick={() => FileSave.saveAs(blob, `team${Date.now()}.json` )} >Download Team JSON</Button>
                         </div>
                     </Toolbar>
             </AppBar>

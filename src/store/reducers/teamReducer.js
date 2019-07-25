@@ -1,9 +1,10 @@
 import * as actionTypes from '../actions/actionTypes';
-import { newState } from '../../utility';
+import { newState, calculateStats } from '../../utility';
 
 const pokemonTeam = process.env.NODE_ENV  === "development" ? [
     {
         level: 100,
+        id: 0,
         EVs: [0, 0, 0, 0, 0, 0],
         IVs: [0, 0, 0, 0, 0, 0],
         ability: "chlorophyll",
@@ -42,31 +43,6 @@ const initialState = {
     pokemonTeam: pokemonTeam,
     editPokemon: {},
 }
-const calculateStats = (pokemon) => {
-    const { stats, EVs, IVs, level, nature } = pokemon
-    return stats
-    .map(stat => ({baseStat: stat.base_stat, name: stat.stat.name}))
-    .map((stat, index) => {
-        let calculated = 0;
-
-        if(stat.name === "hp"){
-            calculated = pokemon.name !== "shedinja" ? Math.round(((2 * stat.baseStat + IVs[index] + (EVs[index] / 4)) * level) / 100 + level + 10) : 1
-        }else{
-            let natureFactor = 1;
-            if(nature.inc === stat.name){
-                natureFactor = 1.1
-            }else if(nature.dec === stat.name){
-                natureFactor = 0.9
-            }
-            calculated = ((((2 * stat.baseStat + IVs[index] + (EVs[index] / 4) )* level) / 100) + 5) * natureFactor
-        }
-        return {
-            stat: calculated.toFixed(0),
-            name: stat.name
-        }
-    })
-
-}
 const addToTeam = (state, addPokemon) => {
    
     const calculatedStats = calculateStats(addPokemon)
@@ -87,6 +63,7 @@ const removeFromTeam = (state, action) => {
 }
 
 const editTeam = (state, action) => {
+
     const newTeam = [...state.pokemonTeam]
     newTeam.splice(action.index, 1, {...action.edited, id: action.index})
     return {

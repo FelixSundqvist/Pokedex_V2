@@ -19,7 +19,7 @@ export default (
 
     }) => {
     const [showEdit, setShowEdit] = useState(false)
-
+    console.log(pokemon, editPokemon)
     useEffect(() => {
         fetchEditPkmn(pokemon.name)
     }, [pokemon, fetchEditPkmn])
