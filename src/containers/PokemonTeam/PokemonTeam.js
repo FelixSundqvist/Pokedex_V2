@@ -23,22 +23,20 @@ const useModalStyles = makeStyles(theme => ({
         alignItems: "center",
         justifyContent: "center",
         flexWrap: "wrap",
-        boxShadow: "2px 2px 4px 2px #ccc",
+        boxShadow: theme.shadows[2],
     },
     statsWrapper: {
         width: "90%",
         margin: "0 auto",
         padding: theme.spacing() * 2,
-        display: "flex",
-        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        boxShadow: "2px 2px 4px 2px #ccc",
+        boxShadow: theme.shadows[2],
     },
     move:{
         borderRadius: "1vh",
         flex: "0 0 40%",
-        border: "2px solid black",
+        boxShadow: theme.shadows[0],
         padding: "16px",
         margin: "8px",
         textTransform: "capitalize",
@@ -50,11 +48,19 @@ const useModalStyles = makeStyles(theme => ({
         padding: theme.spacing(),
         margin: theme.spacing() * 2
     },
+    editStats: {
+        display: "flex",
+        width: "100%",
+        flexDirection: "row"
+    },
+    slider: {
+        margin: theme.spacing(),
+        width: "80%"
+    },
     stats: {
         padding: theme.spacing(),
         width: "100%",
         textAlign: "left",
-        display: "flex",
     },
     changeStats: {
         display: "block",
@@ -121,11 +127,11 @@ const PokemonTeam = React.memo((props) => {
 })
 
 const mapStateToProps = state => ({
-    pokemonTeam: state.pokemonTeam,
-    currentGen: state.selectedGen,
-    selectedPokemon: state.selectedPokemon,
-    pokedexInfo: state.pokedexInfo,
-    editPokemon: state.editPokemon
+    pokemonTeam: state.teamReducer.pokemonTeam,
+    currentGen: state.fetchReducer.selectedGen,
+    selectedPokemon: state.fetchReducer.selectedPokemon,
+    pokedexInfo: state.fetchReducer.pokedexInfo,
+    editPokemon: state.fetchReducer.editPokemon
 })
   
 const mapDispatchToProps = dispatch => ({
@@ -134,7 +140,8 @@ const mapDispatchToProps = dispatch => ({
     changeTeamOrder: (newTeam) => dispatch({type: actionTypes.CHANGE_TEAM_POSITION, newTeam: newTeam}),
     removePkmnFromTeam: (id) => dispatch({type: actionTypes.REMOVE_FROM_TEAM, id: id}),
     fetchEditPkmn: (id) => dispatch({type: actionTypes.FETCH_EDIT_PKMN_START, id: id}),
-    editTeam: (edited, index) => dispatch({type: actionTypes.EDIT_TEAM, edited: edited, index: index})
+    editTeam: (edited, index) => dispatch({type: actionTypes.EDIT_TEAM, edited: edited, index: index}),
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PokemonTeam)

@@ -4,9 +4,10 @@ import { makeStyles } from '@material-ui/styles';
 const useStyles = makeStyles(theme => ({
     root: {
         padding: theme.spacing(),
-        margin: theme.spacing(),
+        margin: theme.spacing()+"px auto",
         border: "2px solid black",
         flex: 1,
+        maxWidth: "40%",
         color: "white",
         textTransform: "uppercase",
         fontFamily: "sans-serif",

@@ -61,12 +61,12 @@ const CurrentPokemon = React.memo((
     if(!isLoadingCurrent && !fetchCurrentPokemonError){
 
         pokemon = (
-            
         <PokedexEntry 
             pokedexInfo={pokedexInfo} 
             selectedPokemon={selectedPokemon}
             evoChain={evoChain}
             onAddClick={() => setOpen(true)}
+            onClick={(pokemon) => fetchSelectedPokemon(pokemon)}
             evolutionClick={(id) => history.push("/id="+id)}
         /> )
     
@@ -88,12 +88,12 @@ const CurrentPokemon = React.memo((
 });
 
 const mapStateToProps = (state) => ({
-    selectedPokemonId: state.selectedPokemonId,
-    selectedPokemon: state.selectedPokemon,
-    pokedexInfo: state.pokedexInfo,
-    isLoadingCurrent: state.isLoadingCurrent,
-    evoChain: state.evolutionChain,
-    fetchCurrentPokemonError: state.fetchCurrentPokemonError
+    selectedPokemonId: state.fetchReducer.selectedPokemonId,
+    selectedPokemon: state.fetchReducer.selectedPokemon,
+    pokedexInfo: state.fetchReducer.pokedexInfo,
+    isLoadingCurrent: state.fetchReducer.isLoadingCurrent,
+    evoChain: state.fetchReducer.evolutionChain,
+    fetchCurrentPokemonError: state.fetchReducer.fetchCurrentPokemonError
 })
 
 const mapDispatchToProps = (dispatch) => ({

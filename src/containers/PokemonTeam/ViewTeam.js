@@ -15,15 +15,14 @@ export default (
         fetchEditPkmn, 
         classes,
         editPokemon,
-        editTeam
+        editTeam,
+
     }) => {
     const [showEdit, setShowEdit] = useState(false)
-    
+
     useEffect(() => {
         fetchEditPkmn(pokemon.name)
     }, [pokemon, fetchEditPkmn])
-
-
     if(!pokemon) return null
     
     let editModal = showEdit && editPokemon
@@ -66,30 +65,44 @@ export default (
                         alt="pkmn" />
                     )}
             </div>
-            <div>
-                <div className={classes.statsWrapper}>
-                    <h2>Ability</h2>
-                    {pokemon.ability}
-                </div>
-            </div>
 
-            <div>
-                <h2>Nature</h2>
-                <div className={classes.statsWrapper}>
-                    {pokemon.nature.name}
-                    <p>INC: {pokemon.nature.inc}<br/>DEC: {pokemon.nature.dec}</p> 
-                </div>
-            </div>
 
+            <div className={classes.statsWrapper}>  
+                    <div>
+                        <h3>Level</h3>
+                        <p>{pokemon.level}</p>
+                        <h2>Ability</h2>
+                        {pokemon.ability}
+                        <h3>Nature</h3>
+                        {pokemon.nature.name}
+
+                        <h3>Stats</h3>
+
+                        {pokemon.calculatedStats.map(stat => {
+                            let color = null
+                            if(pokemon.nature.inc === stat.name){
+                                color = "green"
+                            }else if(pokemon.nature.dec === stat.name){
+                                color = "red"
+                            }
+                        return (
+                            <div key={stat.name + stat.stat}>
+                                <p style={{color: color}}>{stat.name} : {stat.stat}</p>
+                            </div>)
+                        }
+                        )}
+
+                        <h3>Moveset</h3>
+                        <div className={classes.itemWrapper}>
+                            {pokemon.moves.map(current => <div key={current.move} className={classes.move}>{current.move}
+                        </div>)}</div>
+                    </div>
+                </div>
             <div>
-                <h2>Moveset</h2>
-                <div className={classes.itemWrapper}>
-                    {pokemon.moves.map(current => <div key={current.move} className={classes.move}>{current.move}
-                </div>)}</div>
-            </div>
+        </div>
+
             <Button variant="contained" color="secondary" className={classes.button} onClick={() => {
                 setShowEdit(true)
-                
             }}>Edit</Button> 
 
             <Button variant="contained" color="primary" className={classes.button} onClick={() => {
@@ -97,7 +110,7 @@ export default (
                 onClose()
             }}>Remove</Button>
 
-        </div>
+            </div>
         </Modal>
     </>
     )

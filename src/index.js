@@ -1,16 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom'
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
-import reducer from './store/reducers/reducer';
+import fetchReducer from './store/reducers/fetchReducer';
+import teamReducer from './store/reducers/teamReducer';
 import mySaga from './store/sagas/sagas';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+
+const rootReducer = combineReducers({
+    fetchReducer,
+    teamReducer
+})
+
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+
 sagaMiddleware.run(mySaga);
 
 ReactDOM.render(<Provider store={store}>

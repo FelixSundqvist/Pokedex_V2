@@ -23,9 +23,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-
     }
-
 }))
 
 const PokemonInfo = ({habitat, base_happiness, capture_rate, height, weight, className }) => {
@@ -54,11 +52,9 @@ const PokedexInfo = React.memo(props => {
         const { flavor_text_entries, varieties, habitat, base_happiness, capture_rate, egg_groups } = pokedexInfo;
         const { moves, height, weight, abilities, stats } = selectedPokemon;
         const classes = useStyles();
-        
         const imageLink = `http://felixsundqvist.org/pokemon/${selectedPokemon.name}.gif`
-    
-        const pokemonProperties = {}
-        
+
+        const pokemonProperties = {}        
         //DESCRIPTION
         const description = flavor_text_entries 
         ? flavor_text_entries.filter(cur => cur.language.name === "en")[0] 
@@ -94,27 +90,33 @@ const PokedexInfo = React.memo(props => {
         const pokemon3DImage =  imageLink !== "http://felixsundqvist.org/pokemon/undefined.gif" 
             ? <PokemonImage3D imageLink={imageLink} evolutionClick={evolutionClick} /> 
             : null;
-
+        
         const formes = varieties && varieties.length > 1 
-        ? (<div className={classes.button}>
-        {
-        varieties.map(form => 
-            form.pokemon.name.includes("totem") 
-            ? <Button 
-                variant="contained" 
-                color="secondary"
-                style={{margin: "8px"}}
-                onClick={() => props.onClick(props.name)}>{props.children}</Button> 
-            : null
-            )
-        }
+        ? (
+        <div className={classes.button}>
+            {
+            varieties.map(form => 
+                !form.pokemon.name.includes("totem") 
+                ? <Button 
+                    key={form.pokemon.name}
+                    variant="contained" 
+                    color="secondary"
+                    style={{margin: "8px"}}
+                    onClick={() => props.onClick(form.pokemon.name)}>{form.pokemon.name}</Button> 
+                : null
+                )
+            }
         </div>)
         :  null;
 
         const types = selectedPokemon.types 
         ? <div 
             style={{display: "flex"}}
-            key="types">{selectedPokemon.types.map(cur => <Types key={cur.type.name} type={cur.type.name} />).reverse()}</div> 
+            key="types">{
+                selectedPokemon.types
+                .map(cur => <Types key={cur.type.name} type={cur.type.name} />)
+                .reverse()}
+            </div> 
         : null;
 
         return(

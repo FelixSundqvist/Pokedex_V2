@@ -3,13 +3,16 @@ import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import AppBar from '@material-ui/core/AppBar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Toolbar, IconButton } from '@material-ui/core';
+import { Toolbar, IconButton, Button } from '@material-ui/core';
+import FileSave from 'file-saver';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import MenuIcon from '@material-ui/icons/Menu';
 import ClearIcon from '@material-ui/icons/Clear';
 import GenSelectors from './ChangeGenPage/ChangeGenPage';
 import Pokeball from './Pokeball/Pokeball';
 import PokemonTeam from '../../containers/PokemonTeam/PokemonTeam';
+
+
 const useStyles = makeStyles(theme => ({
     root: {
         backgroundColor: theme.palette.primary.main,
@@ -41,7 +44,6 @@ export default ({pokemonTeam, changeGen, changeTeamOrder })=> {
     const [selectedSummary, setSelectedSummary] = useState(null);
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('md'));
-    
     const movePokemon = useCallback((dragIndex, hoverIndex) => {
         const newPkmnTeam = [...pokemonTeam];
         newPkmnTeam[dragIndex] = {...pokemonTeam[hoverIndex], id: dragIndex}
@@ -57,7 +59,9 @@ export default ({pokemonTeam, changeGen, changeTeamOrder })=> {
             setShowAppBar(false);
         }
     }, [matches])
-
+  
+    let blob = new Blob([JSON.stringify({ pokemonTeam: pokemonTeam })], {type: "application/json"})
+    
     const pokeBallClick = (e, id) => {
         setOpenPkmnSummary(true)
         setSelectedSummary(pokemonTeam[id])
@@ -96,11 +100,11 @@ export default ({pokemonTeam, changeGen, changeTeamOrder })=> {
                     <Toolbar className={classes.appBar}>
                         <GenSelectors genClick={changeGen} />
                         <DndProvider backend={HTML5Backend}>
-                            <div style={ 
-                                {
-                                    flex: 1 
-                                } }>{pokeballs}</div>
+                            <div style={{flex: 1}}>{pokeballs}</div>
                         </DndProvider>
+                        <div>
+                            <Button onClick={() => FileSave.saveAs(blob, `team${Date.now()}.json` )} >Download Team</Button>
+                        </div>
                     </Toolbar>
             </AppBar>
         </>

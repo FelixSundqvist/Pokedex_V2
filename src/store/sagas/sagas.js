@@ -84,11 +84,28 @@ function* startFetchEvoChain(actions){
    }
 } 
 
+function* startFetchItems(actions){
+    try{ 
+        const items = yield call(
+        () => axiosInstance.get("/item-category"))
+        
+        console.log(items)
+        yield put({
+        type: actionTypes.FETCH_ITEMS_SUCCESS,
+        items: items.data})
+   }catch(e){
+    yield put({
+        type: actionTypes.FETCH_ITEMS_FAIL
+    })
+   }
+} 
+
 function* mySaga() {
     yield takeEvery(actionTypes.FETCH_PKMN_START, startFetchAll);
     yield takeEvery(actionTypes.FETCH_CURRENT_PKMN_START, startFetchSelected);
     yield takeEvery(actionTypes.FETCH_EVO_CHAIN_START, startFetchEvoChain);
     yield takeEvery(actionTypes.FETCH_EDIT_PKMN_START, startFetchEdited);
+    yield takeEvery(actionTypes.FETCH_ITEMS_START, startFetchItems)
 }
 
 export default mySaga;

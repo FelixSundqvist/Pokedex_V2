@@ -23,8 +23,8 @@ const App = props => {
   );
 }
 const mapStateToProps = state => ({
-  pokemonTeam: state.pokemonTeam,
-  currentGen: state.selectedGen
+    pokemonTeam: state.teamReducer.pokemonTeam,
+    currentGen: state.fetchReducer.selectedGen
 })
 
 const mapDispatchToProps = dispatch => ({

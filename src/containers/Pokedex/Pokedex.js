@@ -44,12 +44,13 @@ const Pokedex = React.memo(props => {
 });
 
 const mapStateToProps = (state) => ({
-    pokemons: state.pokemons,
-    selectedGen: state.selectedGen,
-    selectedPokemonId: state.selectedPokemonId,
-    isLoadingCurrent: state.isLoadingCurrent,
-    fetchPokemonError: state.fetchPokemonError
+    pokemons: state.fetchReducer.pokemons,
+    selectedGen: state.fetchReducer.selectedGen,
+    selectedPokemonId: state.fetchReducer.selectedPokemonId,
+    isLoadingCurrent: state.fetchReducer.isLoadingCurrent,
+    fetchPokemonError: state.fetchReducer.fetchPokemonError
 })
+
 const mapDispatchToProps = (dispatch) => ({
     fetchAllPokemons: (selectedGen) => dispatch({type: actionTypes.FETCH_PKMN_START, selectedGen: selectedGen}),
 })

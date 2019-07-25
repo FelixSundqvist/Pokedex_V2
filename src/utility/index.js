@@ -4,3 +4,7 @@ export const roundNum = (height, round) => Number.parseFloat(height * round).toF
 export const createArr = (arr, newItem) => {
     return [...arr, newItem]
 }
+export const newState = (oldState, newState) =>({
+    ...oldState,
+    ...newState
+})
