@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
 import { makeStyles } from '@material-ui/styles';
@@ -25,9 +25,11 @@ const useStyles = makeStyles(theme => ({
 }))
 const Pokedex = React.memo(props => {
     const { fetchAllPokemons, selectedGen  } = props;
-    
+
     useEffect(() => {
+
         fetchAllPokemons(selectedGen)
+
     }, [selectedGen, fetchAllPokemons])
     
     const classes = useStyles();
@@ -39,8 +41,8 @@ const Pokedex = React.memo(props => {
             selected={props.selectedPokemonId}
             items = {props.pokemons} /> 
     : null;
-    
-    return <div className={classes.root}><div className={classes.wrapper}>{pokemons}</div></div>
+
+    return <div className={classes.root} ><div className={classes.wrapper}>{pokemons}</div></div>
 });
 
 const mapStateToProps = (state) => ({
@@ -52,7 +54,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchAllPokemons: (selectedGen) => dispatch({type: actionTypes.FETCH_PKMN_START, selectedGen: selectedGen}),
+    fetchAllPokemons: (selectedGen, count) => dispatch({type: actionTypes.FETCH_PKMN_START, selectedGen: selectedGen, count}),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pokedex);

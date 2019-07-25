@@ -4,6 +4,7 @@ import axios from 'axios';
 import generations from '../../PokemonGeneration';
 import axiosInstance from '../../axiosInstance';
 /* generations[actions.selectedGen].end */
+
 function* startFetchAll(actions){
     try{
         yield put({type: actionTypes.LOADING_POKEMONS })
@@ -11,6 +12,7 @@ function* startFetchAll(actions){
             .then(res => res.data)
             .then(data => data.results)
        );
+       
         yield put({type: actionTypes.FETCH_PKMN_SUCCESS, pokemons: pokemons})
     }catch(e) {
         yield put({type: actionTypes.FETCH_PKMN_FAIL, error: e})
