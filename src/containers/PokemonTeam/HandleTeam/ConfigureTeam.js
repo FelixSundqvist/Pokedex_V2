@@ -2,7 +2,8 @@ import React, {
     useState, 
     useEffect, 
     useRef, 
-    useCallback } from 'react';
+    useCallback 
+} from 'react';
     
 import {
     Modal, 
@@ -15,12 +16,12 @@ import {
     TableHead, 
     TableRow, 
     TableCell, 
-    TableBody } from '@material-ui/core';
-
-import { natures } from '../../utility/natures/natures';
-import PkmnIcon from '../../components/UI/PkmnIcon/PkmnIcon';
-import Types from '../../components/PokedexEntry/hidden/Types/Types';
-import { calculateStats } from '../../utility';
+    TableBody 
+} from '@material-ui/core';
+import { natures } from '../../../utility/natures/natures';
+import PkmnIcon from '../../../components/UI/PkmnIcon/PkmnIcon'
+import Types from '../../../components/PokedexEntry/hidden/Types/Types';
+import { calculateStats } from '../../../utility';
 
 const AllTypes = ({ types }) => {
     const typeWrapper = {

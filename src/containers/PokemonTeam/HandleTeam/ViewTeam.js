@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button } from '@material-ui/core';
-import PkmnIcon from '../../components/UI/PkmnIcon/PkmnIcon';
-import pkmnBall from '../../assets/poke.png';
-import pkmnBallSelected from '../../assets/pokeSelected.png'
+import PkmnIcon from '../../../components/UI/PkmnIcon/PkmnIcon';
+import pkmnBall from '../../../assets/poke.png';
+import pkmnBallSelected from '../../../assets/pokeSelected.png'
 import ConfigureTeam from './ConfigureTeam'
 export default (
     {
@@ -19,10 +19,11 @@ export default (
 
     }) => {
     const [showEdit, setShowEdit] = useState(false)
-    console.log(pokemon, editPokemon)
+    
     useEffect(() => {
         fetchEditPkmn(pokemon.name)
     }, [pokemon, fetchEditPkmn])
+
     if(!pokemon) return null
     
     let editModal = showEdit && editPokemon
@@ -43,16 +44,16 @@ export default (
             open={open}
             onClose={onClose}>
     
-        <div className={classes.root}>
-            <h1 className={classes.title}>{pokemon.name}</h1>
-            <PkmnIcon name={pokemon.name} />
-            <div>
-                <Button onClick={() => onClickChange("prev")}>Prev</Button>
-                <Button onClick={() => onClickChange("next")}>Next</Button>
-            </div>
-            
-          <div>
-                {Array.from(Array(teamMembers), 
+            <div className={classes.root}>
+                <h1 className={classes.title}>{pokemon.name}</h1>
+                <PkmnIcon name={pokemon.name} />
+                <div>
+                    <Button onClick={() => onClickChange("prev")}>Prev</Button>
+                    <Button onClick={() => onClickChange("next")}>Next</Button>
+                </div>
+                
+                <div>
+                    {Array.from(Array(teamMembers), 
                     (pkmn, index) => index === pokemon.id 
                     ? <img 
                         key={pokemon.name + index}
@@ -64,10 +65,9 @@ export default (
                         src={pkmnBall} 
                         alt="pkmn" />
                     )}
-            </div>
+                </div>
 
-
-            <div className={classes.statsWrapper}>  
+                <div className={classes.statsWrapper}>  
                     <div>
                         <h3>Level</h3>
                         <p>{pokemon.level}</p>
@@ -94,12 +94,12 @@ export default (
 
                         <h3>Moveset</h3>
                         <div className={classes.itemWrapper}>
-                            {pokemon.moves.map(current => <div key={current.move} className={classes.move}>{current.move}
-                        </div>)}</div>
+                            {pokemon.moves.map(current => <div key={current.move} className={classes.move}>{current.move}</div>)}
+                        </div>
                     </div>
                 </div>
             <div>
-        </div>
+            </div>
 
             <Button variant="contained" color="secondary" className={classes.button} onClick={() => {
                 setShowEdit(true)
@@ -112,7 +112,7 @@ export default (
 
             </div>
         </Modal>
-    </>
+        </>
     )
     
 }

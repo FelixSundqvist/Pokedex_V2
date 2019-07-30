@@ -76,7 +76,7 @@ const CurrentPokemon = React.memo((
 
     return (
     <>
-    {addToTeam}
+        {addToTeam}
         <div className={classes.root}>
             <div className={classes.wrapper}>
                 {pokemon}

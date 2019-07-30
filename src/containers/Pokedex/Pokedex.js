@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as actionTypes from '../../store/actions/actionTypes';
 import { makeStyles } from '@material-ui/styles';
@@ -27,9 +27,7 @@ const Pokedex = React.memo(props => {
     const { fetchAllPokemons, selectedGen  } = props;
 
     useEffect(() => {
-
         fetchAllPokemons(selectedGen)
-
     }, [selectedGen, fetchAllPokemons])
     
     const classes = useStyles();

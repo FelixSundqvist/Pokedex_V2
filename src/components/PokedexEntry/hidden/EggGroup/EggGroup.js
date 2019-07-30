@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(),
         border: "2px solid white"
     }
-
 }))
 const EggGroup = ({ eggGroups }) => {
     const classes = useStyles();

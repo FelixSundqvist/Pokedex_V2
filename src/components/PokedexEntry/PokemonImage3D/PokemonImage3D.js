@@ -12,10 +12,7 @@ const PokemonImage3D = props => {
             margin: "16px 0",
         }
     }))();
-
-
     return (<div className={classes.root} name={props.imageLink}></div>)
-
 }
 
 export default PokemonImage3D;

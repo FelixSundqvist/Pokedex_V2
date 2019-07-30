@@ -22,7 +22,6 @@ const Pokeball = props => {
     }))()
 
     return (
-            
         <ButtonBase 
             onClick={props.onClick}
             disabled={!props.pokemonInformation}

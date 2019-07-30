@@ -27,8 +27,7 @@ const Stats = ({stats}) => {
             <p style={{color: checkColor(current.stat.name)}}>{current.stat.name}</p>
             <p>{ current.base_stat }</p>
         </div>)
-        }
-    )
+    })
 
     return <div style={{border: "2px solid white"}}>{statElements}</div>;
 

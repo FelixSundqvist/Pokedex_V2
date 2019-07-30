@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core';
 import * as actionTypes from '../../store/actions/actionTypes';
-import AddToTeam from './ConfigureTeam';
-import ViewTeam from './ViewTeam'
+import AddToTeam from './HandleTeam/ConfigureTeam';
+import ViewTeam from './HandleTeam/ViewTeam'
 const useModalStyles = makeStyles(theme => ({
     root: {
         height: "100%",
